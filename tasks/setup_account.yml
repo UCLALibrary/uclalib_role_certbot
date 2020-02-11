@@ -1,0 +1,53 @@
+---
+
+- name: Create certbot ACME account directory structure
+  file:
+    path: "{{ certbot_acme_accnt_path }}"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0700"
+
+- name: Create renewal-hooks directory structure
+  file:
+    path: "{{ certbot_baseconfig_path }}/renewal-hooks/{{ item }}"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  loop:
+    - "deploy"
+    - "post"
+    - "pre"
+
+- name: Create certbot ACME account hash directory
+  file:
+    path: "{{ certbot_acme_accnt_path }}/{{ acme_accnt_hash }}"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0700"
+
+- name: Put in place ACME account meta.json file
+  template:
+    src: meta_json.j2
+    dest: "{{ certbot_acme_accnt_path }}/{{ acme_accnt_hash }}/meta.json"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+
+- name: Put in place ACME account regr.json file
+  template:
+    src: regr_json.j2
+    dest: "{{ certbot_acme_accnt_path }}/{{ acme_accnt_hash }}/regr.json"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+
+- name: Put in place ACME account private_key.json file
+  template:
+    src: private_key_json.j2
+    dest: "{{ certbot_acme_accnt_path }}/{{ acme_accnt_hash }}/private_key.json"
+    owner: "root"
+    group: "root"
+    mode: "0400"

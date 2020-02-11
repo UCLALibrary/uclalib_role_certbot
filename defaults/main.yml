@@ -1,0 +1,33 @@
+---
+
+# Certbot installation packages:
+certbot_install_pkgs:
+  - "certbot"
+  - "python2-certbot-apache"
+
+# Certbot can be registered with a supported ACME account service
+# This role supports Let's Encrypt or Sectigo
+# Acceptable values for this varibale are:
+# 1) letsencrypt
+# 2) sectigo
+certbot_reg_type: ""
+
+# Path to certbot configuration and certificate files
+certbot_baseconfig_path: "/etc/letsencrypt"
+
+# Path to ACME account registration data
+certbot_acme_accnt_path: ""
+
+# ACME Account identification information
+# Email, Server URL, Key ID, HMAC ID
+acme_accnt_email: ""
+acme_accnt_url: ""
+acme_accnt_keyid: ""
+acme_accnt_hmacid: ""
+
+# Hash value representing a valid ACME Account
+# within the /etc/letsencrypt directory structure
+acme_accnt_hash: ""
+
+# Private key json associated with the ACME Account
+acme_accnt_priv_key_json: ""

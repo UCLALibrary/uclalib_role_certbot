@@ -1,0 +1,14 @@
+---
+
+- name: Install Certbot client
+  yum:
+    name: "{{ certbot_install_pkgs }}"
+    state: "present"
+
+- name: Put in place the certbot cli.ini file
+  template:
+    src: "certbot_cli_ini.j2"
+    dest: "{{ certbot_baseconfig_path }}/cli.ini"
+    owner: "root"
+    group: "root"
+    mode: "0640"

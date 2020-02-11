@@ -1,0 +1,4 @@
+---
+
+- name: Load variable file based on ACME account registration type
+  include_vars: "{{ certbot_reg_type }}.yml"

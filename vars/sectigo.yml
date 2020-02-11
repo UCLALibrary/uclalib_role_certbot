@@ -1,0 +1,5 @@
+---
+
+acme_accnt_url: "https://acme.sectigo.com/v2/InCommonRSAOV"
+
+certbot_acme_accnt_path: "{{ certbot_baseconfig_path }}/accounts/acme.sectigo.com/v2/InCommonRSAOV"
