@@ -1,0 +1,31 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint:
+  name: yamllint
+  options:
+    config-file: molecule/default/yaml-lint.yml
+platforms:
+  - name: instance
+    image: centos:7
+    command: /sbin/init
+    privileged: true
+    tmpfs:
+      - /run
+      - /run/lock
+    volume:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+  playbooks:
+    converge: ${MOLECULE_PLAYBOOK:-playbook.yml}
+scenario:
+  name: default
+verifier:
+  name: testinfra
+  lint:
+    name: flake8
