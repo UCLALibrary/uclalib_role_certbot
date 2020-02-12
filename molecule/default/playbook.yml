@@ -1,0 +1,17 @@
+---
+- name: Converge
+  hosts: all
+
+  vars:
+    certbot_reg_type: "sectigo"
+    acme_accnt_email: "test@library.ucla.edu"
+    acme_accnt_keyid: "test-key-id"
+    acme_accnt_hmacid: "test-hmac-id"
+    acme_accnt_hash: "test_accnt_hash"
+    acme_accnt_priv_key_json: |
+      {"e": "entry1", "d": "entry2", "n": "entry3", "q": "entry4", "p": "entry5", "kty": "RSA", "qi": "entry6", "dp": "entry7", "dq": "entry8"}
+
+
+  roles:
+    - role: uclalib_role_epel
+    - role: uclalib_role_certbot
