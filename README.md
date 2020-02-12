@@ -1,4 +1,4 @@
-uclalib_role_certbot
+uclalib_role_certbot [![Build Status](https://travis-ci.com/UCLALibrary/uclalib_role_certbot.svg?branch=master)](https://travis-ci.com/UCLALibrary/uclalib_role_certbot)
 =========
 
 Ansible role for installing and configuring the [EFF Certbot client](https://certbot.eff.org/)
