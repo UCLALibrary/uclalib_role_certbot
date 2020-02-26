@@ -1,7 +1,18 @@
 ---
 
-- import_tasks: include-vars.yml
+- block:
+    - import_tasks: include_accnt_vars.yml
 
-- import_tasks: install_certbot.yml
+    - import_tasks: install_certbot.yml
 
-- import_tasks: setup_account.yml
+    - import_tasks: setup_account.yml
+  tags:
+    - cert-setup
+
+- block:
+    - import_tasks: request_certificate.yml
+      when: certbot_make_cert_request
+
+    - import_tasks: setup_renew_cron.yml
+  tags:
+    - cert-req

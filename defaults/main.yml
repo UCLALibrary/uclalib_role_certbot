@@ -3,7 +3,6 @@
 # Certbot installation packages:
 certbot_install_pkgs:
   - "certbot"
-  - "python2-certbot-apache"
 
 # Certbot can be registered with a supported ACME account service
 # This role supports Let's Encrypt or Sectigo
@@ -31,3 +30,36 @@ acme_accnt_hash: ""
 
 # Private key json associated with the ACME Account
 acme_accnt_priv_key_json: ""
+
+# Set if a certificate request should be made (true/false)
+certbot_make_cert_request: "false"
+
+# List of domain names to associate with the certificate
+certbot_domains: []
+#  - example1.library.ucla.edu
+#  - example2.library.ucla.edu
+
+# Internal name of the certificate certbot will use for reference
+cerbot_certname: ""
+
+# OPTIONAL - Command to run after successful renewal of the certificate
+# Example: "systemctl restart httpd"
+certbot_renewhook: ""
+
+# Filesystem path to the requested/issued certificate
+certbot_certificate_path: "{{ certbot_baseconfig_path }}/live/{{ cerbot_certname }}/fullchain.pem"
+
+# certbot command to use when requesting the certificate
+certbot_request_command: >-
+  certbot certonly --standalone
+  --domain {{ certbot_domains | join(',') }}
+  --cert-name {{ cerbot_certname }}
+  {{ '--renew-hook' if certbot_deployhook != '' else '' }}{{ certbot_renewhook | quote }}
+
+# Certbot cron set-up parameters
+certbot_cron_renew_user: "root"
+certbot_cron_renew_hour: "0,12"
+certbot_cron_renew_minute: "5"
+certbot_cron_renew_command: >-
+  python -c 'import random; import time; time.sleep(random.random() * 3600)'
+  && certbot renew --quiet
