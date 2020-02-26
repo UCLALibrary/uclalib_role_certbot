@@ -1,0 +1,10 @@
+---
+
+- name: Determine if certificate requested already exists
+  stat:
+    path: "{{ certbot_certificate_path }}"
+  register: cert_status
+
+- name: Initiate certificate request
+  command: "{{ certbot_request_command }}"
+  when: not cert_status.stat.exists | bool

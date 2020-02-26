@@ -18,6 +18,9 @@ If you are on a RHEL system, the `rhel-server-optional-rpms` repo should already
 Role Variables
 --------------
 
+Reference `defaults/main.yml` to review default values.
+
+Variables associated with certbot installation and ACME account set-up:
 - `certbot_install_pkgs` - defines the set of certbot packages necessary to complete the installation.
 - `certbot_reg_type` - defines the registration type for the certbot client (acceptable value are: `sectigo` or `letsencrypt`).
 - `certbot_baseconfig_path` - defines the path to certbot configuration and certificate files (default: `/etc/letsencrypt`).
@@ -28,6 +31,18 @@ Role Variables
 - `acme_accnt_hmacid` - defines the HMAC key identifier for the ACME account.
 - `acme_accnt_hash` - defines the hash value for the directory name that will store ACME account files.
 - `acme_accnt_priv_key_json` - contains the json content for the ACME account's private key.
+
+Variables associated with initiating a certificate request and set-up of renewal cron job:
+- `certbot_domains` - defines the list of domains to be associated with the requested certificate
+- `cerbot_certname` - defines the internal name certbot will use to reference/track the certificate
+- `certbot_renewhook` - OPTIONAL - defines the command that should run after a successful certificate renewal
+- `certbot_make_cert_request` - defines whether a certificate request should be made (`true`/`false`)
+- `certbot_certificate_path` - defines the filesystem path to the requested/issued certificate
+- `certbot_request_command` - defines the command to use to initiate a certbot certificate request
+- `certbot_cron_renew_user` - defines the user the cron job should run as
+- `certbot_cron_renew_hour` - defines the hour parameter for when the cron job should run
+- `certbot_cron_renew_minute` - defines the minute parameter for when the cron job should run
+- `certbot_cron_renew_command` - defines the command to use to initiate a certbot certificate renewal
 
 Dependencies
 ------------

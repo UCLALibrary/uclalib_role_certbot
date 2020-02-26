@@ -1,0 +1,9 @@
+---
+
+- name: Create cron job for certificate renewal
+  cron:
+    name: "Certbot certificate renewal"
+    job: "{{ certbot_cron_renew_command }}"
+    minute: "{{ certbot_cron_renew_minute }}"
+    hour: "{{ certbot_cron_renew_hour }}"
+    user: "{{ certbot_cron_renew_user }}"
