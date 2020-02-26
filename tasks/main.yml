@@ -11,7 +11,7 @@
 
 - block:
     - import_tasks: request_certificate.yml
-      when: certbot_make_cert_request
+      when: certbot_make_cert_request | bool
 
     - import_tasks: setup_renew_cron.yml
   tags:

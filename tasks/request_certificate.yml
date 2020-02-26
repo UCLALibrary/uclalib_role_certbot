@@ -7,4 +7,4 @@
 
 - name: Initiate certificate request
   command: "{{ certbot_request_command }}"
-  when: not cert_status.stat.exists
+  when: not cert_status.stat.exists | bool
