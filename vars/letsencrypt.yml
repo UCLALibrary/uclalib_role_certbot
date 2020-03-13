@@ -1,5 +1,7 @@
 ---
 
-acme_accnt_url: "https://acme-v02.api.letsencrypt.org/directory"
+acme_server_name: "acme-v02.api.letsencrypt.org"
 
-certbot_acme_accnt_path: "{{ certbot_baseconfig_path }}/accounts/acme-v02.api.letsencrypt.org/directory"
+acme_accnt_url: "https://{{ acme_server_name }}/directory"
+
+certbot_acme_accnt_path: "{{ certbot_baseconfig_path }}/accounts/{{ acme_server_name }}/directory"
