@@ -34,6 +34,10 @@ acme_accnt_priv_key_json: ""
 # Set if a certificate request should be made (true/false)
 certbot_make_cert_request: "false"
 
+# Set if the system running certbot will have restricted access to http
+# i.e. port 80 will not be world accessible
+certbot_http_access_restricted: "false"
+
 # List of domain names to associate with the certificate
 certbot_domains: []
 #  - example1.library.ucla.edu
@@ -62,4 +66,4 @@ certbot_cron_renew_hour: "0,12"
 certbot_cron_renew_minute: "5"
 certbot_cron_renew_command: >-
   python -c 'import random; import time; time.sleep(random.random() * 3600)'
-  && certbot renew --quiet
+  && /usr/local/bin/certbot_renew
