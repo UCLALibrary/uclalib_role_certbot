@@ -12,6 +12,8 @@
         grep -w http |
         grep "0.0.0.0"
       register: firewall_http_access
+      ignore_errors: true
+      changed_when: false
 
     - name: Open port 80 to allow certificate authentication checks
       firewalld:
