@@ -8,11 +8,7 @@
 - block:
     - name: Determine if port 80 is open to the world
       command: >
-        firewall-cmd --query-rich-rule=
-        'rule family="ipv4"
-        source address="0.0.0.0/0"
-        service name="http"
-        accept'
+        firewall-cmd --query-rich-rule='rule family="ipv4" source address="0.0.0.0/0" service name="http" accept'
       register: firewall_http_access
       changed_when: false
 
