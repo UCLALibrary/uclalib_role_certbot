@@ -14,23 +14,15 @@
       failed_when: firewall_http_access.rc > 1
 
     - name: Open port 80 to allow certificate authentication checks
-      firewalld:
-        zone: "public"
-        service: "http"
-        source: "0.0.0.0"
-        permanent: "no"
-        state: "enabled"
+      command: >
+        firewall-cmd --zone=public --add-port=80/tcp
       when: firewall_http_access.stdout == "no"
 
     - name: Initiate certificate request
       command: "{{ certbot_request_command }}"
 
     - name: Close port 80 access
-      firewalld:
-        zone: "public"
-        service: "http"
-        source: "0.0.0.0"
-        permanent: "no"
-        state: "absent"
+      command: >
+        firewall-cmd --zone=public --remove-port=80/tcp
       when: firewall_http_access.stdout == "no"
   when: not cert_status.stat.exists | bool
