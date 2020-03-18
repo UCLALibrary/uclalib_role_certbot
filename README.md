@@ -15,6 +15,10 @@ This role provides the ability to:
 The EPEL repo should already be installed/enabled.
 If you are on a RHEL system, the `rhel-server-optional-rpms` repo should already be enabled.
 
+Certificate requests and renewals relay on the certbot standalone authenticator. This means certbot will provision a temporary web server on port 80 to verify the domain name association with the certificate.
+
+Before initiating a certificate request, be sure there is no running process that is already bound to HTTP Port 80 on the host. This will cause the certificate request process to fail.
+
 Role Variables
 --------------
 
@@ -52,6 +56,7 @@ None.
 
 Example Playbook
 ----------------
+To run the role all by itself your playbook could look something like this:
 
 ```
 ---
@@ -64,3 +69,20 @@ Example Playbook
   roles:
     - { role: uclalib_role_certbot }
 ```
+
+To run the role along-side other roles as a part of a larger playbook - for example one that installs a website running in Apache HTTPD:
+
+```
+---
+
+- name: uclalib_webapp.yml
+  become: yes
+  become_method: sudo
+  hosts: all
+
+  roles:
+    - { role: uclalib_role_certbot }
+    - { role: uclalib_role_apache }
+    - { role: uclalib_role_webapp }
+```
+Ensure the certbot role runs before the web server role - this will ensure port 80 is available for certbot to run its domain authentication checks. If something else is using port 80, certificate requests will fail.
