@@ -17,12 +17,10 @@ fi
 
 {% if certbot_http_access_restricted | bool %}
 firewall-cmd --zone=public --add-port=80/tcp
-firewall-cmd --reload
 
 certbot renew --quiet
 
 firewall-cmd --zone=public --remove-port=80/tcp
-firewall-cmd --reload
 {% else %}
 certbot renew --quiet
 {% endif %}
