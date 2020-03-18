@@ -11,6 +11,7 @@
         firewall-cmd --query-rich-rule='rule family="ipv4" source address="0.0.0.0/0" service name="http" accept'
       register: firewall_http_access
       changed_when: false
+      failed_when: firewall_http_access.rc > 1
 
     - name: Open port 80 to allow certificate authentication checks
       firewalld:
