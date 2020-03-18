@@ -37,6 +37,7 @@ Variables associated with initiating a certificate request and set-up of renewal
 - `cerbot_certname` - defines the internal name certbot will use to reference/track the certificate
 - `certbot_renewhook` - OPTIONAL - defines the command that should run after a successful certificate renewal
 - `certbot_make_cert_request` - defines whether a certificate request should be made (`true`/`false`)
+- `certbot_http_access_restricted` - defines whether the system running certbot will have restricted access to http (`true`/`false`)
 - `certbot_certificate_path` - defines the filesystem path to the requested/issued certificate
 - `certbot_request_command` - defines the command to use to initiate a certbot certificate request
 - `certbot_cron_renew_user` - defines the user the cron job should run as

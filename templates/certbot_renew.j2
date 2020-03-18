@@ -1,0 +1,32 @@
+#!/bin/bash
+
+###
+#
+# THIS IS AN ANSIBLE MANAGED SCRIPT - DO NOT EDIT
+#
+###
+
+# This script is meant to be run as part of a cron job to renew this systems
+# certificates requested/issued via certbot
+
+web_srv_proc=$(lsof -i:80 | tail -1 | awk '{ print $1 }')
+
+if [ ! -z "${web_srv_proc}" ] ; then
+  systemctl stop ${web_srv_proc}
+fi
+
+{% if certbot_http_access_restricted | bool %}
+firewall-cmd --zone=public --add-port=80/tcp
+firewall-cmd --reload
+
+certbot renew --quiet
+
+firewall-cmd --zone=public --remove-port=80/tcp
+firewall-cmd --reload
+{% else %}
+certbot renew --quiet
+{% endif %}
+
+if [ ! -z "${web_srv_proc}" ] ; then
+  systemctl start ${web_srv_proc}
+fi

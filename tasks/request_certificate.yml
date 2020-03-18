@@ -5,6 +5,34 @@
     path: "{{ certbot_certificate_path }}"
   register: cert_status
 
-- name: Initiate certificate request
-  command: "{{ certbot_request_command }}"
+- block:
+    - name: Determine if port 80 is open to the world
+      shell: >
+        firewall-cmd --list-all |
+        grep -w http |
+        grep "0.0.0.0"
+      register: firewall_http_access
+      ignore_errors: true
+      changed_when: false
+
+    - name: Open port 80 to allow certificate authentication checks
+      firewalld:
+        zone: "public"
+        service: "http"
+        source: "0.0.0.0"
+        permanent: "no"
+        state: "enabled"
+      when: firewall_http_access.rc != 0
+
+    - name: Initiate certificate request
+      command: "{{ certbot_request_command }}"
+
+    - name: Close port 80 access
+      firewalld:
+        zone: "public"
+        service: "http"
+        source: "0.0.0.0"
+        permanent: "no"
+        state: "absent"
+      when: firewall_http_access.rc != 0
   when: not cert_status.stat.exists | bool
