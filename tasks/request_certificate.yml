@@ -23,7 +23,7 @@
       service:
         name: "{{ http_port_binding.stdout }}"
         state: "stopped"
-      when: http_port_binding.stdout != ""
+      when: http_port_binding.stdout | length > 0
 
     - name: Open port 80 to allow certificate authentication checks
       command: >
@@ -37,7 +37,7 @@
       service:
         name: "{{ http_port_binding.stdout }}"
         state: "started"
-      when: http_port_binding.stdout != ""
+      when: http_port_binding.stdout | length > 0
 
     - name: Close port 80 access
       command: >
