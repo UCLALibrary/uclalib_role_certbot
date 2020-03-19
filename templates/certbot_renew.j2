@@ -16,11 +16,11 @@ if [ ! -z "${web_srv_proc}" ] ; then
 fi
 
 {% if certbot_http_access_restricted | bool %}
-firewall-cmd --zone=public --add-port=80/tcp
+firewall-cmd -q --zone=public --add-port=80/tcp
 
 certbot renew --quiet
 
-firewall-cmd --zone=public --remove-port=80/tcp
+firewall-cmd -q --zone=public --remove-port=80/tcp
 {% else %}
 certbot renew --quiet
 {% endif %}
