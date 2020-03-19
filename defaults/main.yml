@@ -58,7 +58,7 @@ certbot_request_command: >-
   certbot certonly --standalone
   --domain {{ certbot_domains | join(',') }}
   --cert-name {{ cerbot_certname }}
-  {{ '--renew-hook ' if certbot_renewhook != '' else '' }}{{ certbot_renewhook | quote }}
+  {{ '--renew-hook ' + certbot_renewhook|quote if certbot_renewhook != '' else '' }}
 
 # Certbot cron set-up parameters
 certbot_cron_renew_user: "root"
