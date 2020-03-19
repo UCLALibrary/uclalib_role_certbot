@@ -14,18 +14,10 @@
       failed_when: firewall_http_access.rc > 1
 
     - name: Determine if a process is bound to port 80
-      wait_for:
-        port: "80"
-        timeout: "1"
+      shell: >
+        lsof -i:80 | tail -1 | awk '{ print $1 }'
       register: http_port_binding
       changed_when: false
-      ignore_errors: true
-
-    - debug:
-        var: http_port_binding
-
-    - fail:
-        msg: "STOP"
 
     - name: Stop process bound to port 80
       service:
