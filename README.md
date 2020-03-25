@@ -49,6 +49,14 @@ Variables associated with initiating a certificate request and set-up of renewal
 - `certbot_cron_renew_minute` - defines the minute parameter for when the cron job should run
 - `certbot_cron_renew_command` - defines the command to use to initiate a certbot certificate renewal
 
+Tags
+----
+
+Use the following tags to run specific role functions:
+
+- `cert-setup` - causes the role to only set-up the ACME account on the host system
+- `cert-req` - causes the role to only make a certificate request 
+
 Dependencies
 ------------
 
