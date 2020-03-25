@@ -19,6 +19,8 @@ Certificate requests and renewals relay on the certbot standalone authenticator.
 
 Before initiating a certificate request, be sure there is no running process that is already bound to HTTP Port 80 on the host. This will cause the certificate request process to fail.
 
+**NOTE**: If you are running this role within UCLA Library's infrastructure, reference our Confluence page - [Sectigo ACME Certbot Using Ansible](https://docs.library.ucla.edu/x/SCyUD)
+
 Role Variables
 --------------
 
@@ -48,6 +50,31 @@ Variables associated with initiating a certificate request and set-up of renewal
 - `certbot_cron_renew_hour` - defines the hour parameter for when the cron job should run
 - `certbot_cron_renew_minute` - defines the minute parameter for when the cron job should run
 - `certbot_cron_renew_command` - defines the command to use to initiate a certbot certificate renewal
+
+
+Minimum set of variables that need to be defined to use this role for setting up the ACME account and making a certificate request:
+```
+certbot_reg_type
+
+acme_accnt_email
+acme_accnt_keyid
+acme_accnt_hmacid
+acme_accnt_hash
+acme_accnt_priv_key_json
+
+
+certbot_make_cert_request
+certbot_domains
+cerbot_certname
+```
+
+Tags
+----
+
+Use the following tags to run specific role functions:
+
+- `cert-setup` - causes the role to only set-up the ACME account on the host system
+- `cert-req` - causes the role to only make a certificate request
 
 Dependencies
 ------------
