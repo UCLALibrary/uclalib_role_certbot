@@ -62,7 +62,7 @@ certbot_request_command: >-
 
 # Certbot cron set-up parameters
 certbot_cron_renew_user: "root"
-certbot_cron_renew_hour: "0,12"
+certbot_cron_renew_hour: "0"
 certbot_cron_renew_minute: "5"
 certbot_cron_renew_command: >-
   python -c 'import random; import time; time.sleep(random.random() * 3600)'
