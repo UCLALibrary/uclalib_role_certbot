@@ -13,20 +13,18 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 web_srv_proc=$(lsof -i:80 | tail -1 | awk '{ print $1 }')
 
-if [ ! -z "${web_srv_proc}" ] ; then
-  systemctl stop ${web_srv_proc}
-fi
-
 {% if certbot_http_access_restricted | bool %}
 firewall-cmd -q --zone=public --add-port=80/tcp
-
-certbot renew --quiet
-
+if [ ! -z "${web_srv_proc}" ] ; then
+  certbot renew --quiet --pre-hook "systemctl stop ${web_srv_proc}" --post-hook "systemctl start ${web_srv_proc}"
+else
+  certbot renew --quiet
+fi
 firewall-cmd -q --zone=public --remove-port=80/tcp
 {% else %}
-certbot renew --quiet
-{% endif %}
-
 if [ ! -z "${web_srv_proc}" ] ; then
-  systemctl start ${web_srv_proc}
+  certbot renew --quiet --pre-hook "systemctl stop ${web_srv_proc}" --post-hook "systemctl start ${web_srv_proc}"
+else
+  certbot renew --quiet
 fi
+{% endif %}
