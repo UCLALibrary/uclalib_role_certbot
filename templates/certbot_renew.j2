@@ -15,16 +15,14 @@ web_srv_proc=$(lsof -i:80 | tail -1 | awk '{ print $1 }')
 
 {% if certbot_http_access_restricted | bool %}
 firewall-cmd -q --zone=public --add-port=80/tcp
+{% endif %}
+
 if [ ! -z "${web_srv_proc}" ] ; then
   certbot renew --quiet --pre-hook "systemctl stop ${web_srv_proc}" --post-hook "systemctl start ${web_srv_proc}"
 else
   certbot renew --quiet
 fi
+
+{% if certbot_http_access_restricted | bool %}
 firewall-cmd -q --zone=public --remove-port=80/tcp
-{% else %}
-if [ ! -z "${web_srv_proc}" ] ; then
-  certbot renew --quiet --pre-hook "systemctl stop ${web_srv_proc}" --post-hook "systemctl start ${web_srv_proc}"
-else
-  certbot renew --quiet
-fi
 {% endif %}
