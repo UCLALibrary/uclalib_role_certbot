@@ -65,4 +65,4 @@ certbot_cron_renew_user: "root"
 certbot_cron_renew_hour: "0"
 certbot_cron_renew_minute: "5"
 certbot_cron_renew_command: >-
-  sleep $(( RANDOM % 3600 )) && /usr/local/bin/certbot_renew
+  sleep $(( RANDOM \% 3600 )) && /usr/local/bin/certbot_renew
