@@ -38,27 +38,24 @@ certbot_make_cert_request: "false"
 # i.e. port 80 will not be world accessible
 certbot_http_access_restricted: "false"
 
-# List of domain names to associate with the certificate
-certbot_domains: []
-#  - example1.library.ucla.edu
-#  - example2.library.ucla.edu
-
-# Internal name of the certificate certbot will use for reference
-cerbot_certname: ""
+# Dictionary of certificates to request
+certbot_certificates:
+  certname1:
+    domains: []
+      # - example1.library.ucla.edu
+      # - example2.library.ucla.edu
+  certname2:
+    domains: []
+      # - example3.library.ucla.edu
+      # - example4.library.ucla.edu
+  certname3:
+    domains: []
+      # - example5.library.ucla.edu
+      # - example6.library.ucla.edu
 
 # OPTIONAL - Command to run after successful renewal of the certificate
 # Example: "systemctl restart httpd"
 certbot_renewhook: ""
-
-# Filesystem path to the requested/issued certificate
-certbot_certificate_path: "{{ certbot_baseconfig_path }}/live/{{ cerbot_certname }}/fullchain.pem"
-
-# certbot command to use when requesting the certificate
-certbot_request_command: >-
-  certbot certonly --standalone
-  --domain {{ certbot_domains | join(',') }}
-  --cert-name {{ cerbot_certname }}
-  {{ '--renew-hook ' + certbot_renewhook|quote if certbot_renewhook != '' else '' }}
 
 # Certbot cron set-up parameters
 certbot_cron_renew_user: "root"
