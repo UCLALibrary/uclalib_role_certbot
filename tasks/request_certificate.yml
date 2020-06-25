@@ -36,7 +36,7 @@
             certbot certonly --standalone
             --domain {{ item.value.domains | join(',') }}
             --cert-name {{ item.key }}
-            {{ '--renew-hook ' + certbot_renewhook|quote if certbot_renewhook != '' else '' }}
+            {{ '--renew-hook ' + certbot_renewhook|quote if certbot_renewhook|length > 0 else '' }}
 
         - name: Start process bound to port 80
           service:
