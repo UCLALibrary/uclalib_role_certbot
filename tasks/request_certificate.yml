@@ -2,4 +2,4 @@
 
 - name: Loop through certificate requests
   include_tasks: cert_req_loop.yml
-  loop: "{{ lookup('dict', certbot_certificates) }}"
+  loop: "{{ query('dict', certbot_certificates) }}"
