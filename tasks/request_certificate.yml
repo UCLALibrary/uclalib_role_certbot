@@ -1,46 +1,5 @@
 ---
 
-- name: Determine if certificate requested already exists
-  stat:
-    path: "{{ certbot_certificate_path }}"
-  register: cert_status
-
-- block:
-    - name: Determine if port 80 is open to the world
-      command: >
-        firewall-cmd --query-rich-rule='rule family="ipv4" source address="0.0.0.0/0" service name="http" accept'
-      register: firewall_http_access
-      changed_when: false
-      failed_when: firewall_http_access.rc > 1
-
-    - name: Determine if a process is bound to port 80
-      shell: >
-        lsof -i:80 | tail -1 | awk '{ print $1 }'
-      register: http_port_binding
-      changed_when: false
-
-    - name: Stop process bound to port 80
-      service:
-        name: "{{ http_port_binding.stdout }}"
-        state: "stopped"
-      when: http_port_binding.stdout | length > 0
-
-    - name: Open port 80 to allow certificate authentication checks
-      command: >
-        firewall-cmd --zone=public --add-port=80/tcp
-      when: firewall_http_access.stdout == "no"
-
-    - name: Initiate certificate request
-      command: "{{ certbot_request_command }}"
-
-    - name: Start process bound to port 80
-      service:
-        name: "{{ http_port_binding.stdout }}"
-        state: "started"
-      when: http_port_binding.stdout | length > 0
-
-    - name: Close port 80 access
-      command: >
-        firewall-cmd --zone=public --remove-port=80/tcp
-      when: firewall_http_access.stdout == "no"
-  when: not cert_status.stat.exists | bool
+- name: Loop through certificate requests
+  include_tasks: cert_req_loop.yml
+  loop: "{{ lookup('dict', certbot_certificates) }}"
