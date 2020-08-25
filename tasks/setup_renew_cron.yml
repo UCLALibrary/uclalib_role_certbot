@@ -2,7 +2,7 @@
 
 - name: Put in place certbot renewal cron job script
   template:
-    src: "certbot_renew.j2"
+    src: "{{ certbot_request_type }}_certbot_renew.j2"
     dest: "/usr/local/bin/certbot_renew"
     owner: "root"
     group: "root"

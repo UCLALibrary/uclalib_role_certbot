@@ -34,6 +34,9 @@ acme_accnt_priv_key_json: ""
 # Set if a certificate request should be made (true/false)
 certbot_make_cert_request: "false"
 
+# Define the type of certificate request process to use (standard / haproxy)
+certbot_request_type: "standard"
+
 # Set if the system running certbot will have restricted access to http
 # i.e. port 80 will not be world accessible
 certbot_http_access_restricted: "false"
