@@ -35,6 +35,8 @@ acme_accnt_priv_key_json: ""
 certbot_make_cert_request: "false"
 
 # Define the type of certificate request process to use (standard / haproxy)
+# standard - certificates will be requested/packaged using the standard (default) method 
+# haproxy - certificates will be requested/packaged for use by HAProxy
 certbot_request_type: "standard"
 
 # Set if the system running certbot will have restricted access to http
