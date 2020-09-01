@@ -7,22 +7,10 @@
 ###
 
 # This script is meant to be run as part of a cron job to renew this systems
-# certificates requested/issued via certbot
+# certificates requested/issued via certbot for an HAProxy load balancer.
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
-web_srv_proc=$(lsof -i:80 | tail -1 | awk '{ print $1 }')
+web_srv_proc="haproxy"
 
-{% if certbot_http_access_restricted | bool %}
-firewall-cmd -q --zone=public --add-port=80/tcp
-{% endif %}
-
-if [ ! -z "${web_srv_proc}" ] ; then
-  certbot renew --quiet --pre-hook "systemctl stop ${web_srv_proc}" --post-hook "systemctl start ${web_srv_proc}"
-else
-  certbot renew --quiet
-fi
-
-{% if certbot_http_access_restricted | bool %}
-firewall-cmd -q --zone=public --remove-port=80/tcp
-{% endif %}
+certbot renew --quiet --http-01-port {{ certbot_http_challenge_port }} --post-hook "systemctl reload ${web_srv_proc}"
