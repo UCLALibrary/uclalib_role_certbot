@@ -1,0 +1,24 @@
+---
+
+- name: Determine if certificate already exists
+  stat:
+    path: "{{ certbot_baseconfig_path }}/live/{{ item.key }}/fullchain.pem"
+  register: cert_path_status
+
+- block:
+    - name: Initiate certificate request
+      command: >-
+        certbot certonly --standalone
+        --domain {{ item.value.domains | join(',') }}
+        --cert-name {{ item.key }}
+        --http-01-port {{ certbot_http_challenge_port }}
+        {{ '--renew-hook ' + certbot_renewhook|quote if certbot_renewhook|length > 0 else '' }}
+
+    - name: Create HAProxy pem certificate file from certbot certificates
+      shell: >-
+        cat {{ certbot_baseconfig_path }}/live/{{ item.key }}/privkey.pem
+        {{ certbot_baseconfig_path }}/live/{{ item.key }}/cert.pem
+        {{ certbot_baseconfig_path }}/live/{{ item.key }}/chain.pem > {{ haproxy_certificate_path }}/{{ item.key }}.pem
+      notify:
+        - reload haproxy
+  when: not cert_path_status.stat.exists | bool
