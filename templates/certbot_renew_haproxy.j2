@@ -1,0 +1,33 @@
+#!/bin/bash
+
+###
+#
+# THIS IS AN ANSIBLE MANAGED SCRIPT - DO NOT EDIT
+#
+###
+
+# This script is meant to be run as part of a cron job to renew this system's
+# certificates requested/issued via certbot for an HAProxy load balancer.
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+CERTBASEPATH="{{ certbot_baseconfig_path }}/live"
+CERTNAMES=$(find ${CERTBASEPATH} -mindepth 1 -maxdepth 1 -type d -printf '%f\n')
+CERT_EXP_LIMIT=30
+
+for NAME in ${CERTNAMES} ; do
+  VALID_DAYS=$((certbot certificates --cert-name ${NAME} | grep -o "VALID: [0-9]* days" | awk '{ print $2 }') 2> /dev/null)
+
+  if [ "${VALID_DAYS}" -le "${CERT_EXP_LIMIT}" ] ; then
+    certbot renew --quiet --cert-name ${NAME} --http-01-port {{ certbot_http_challenge_port }}
+
+    # Package certificate in haproxy pem file format
+    cat ${CERTBASEPATH}/${NAME}/privkey.pem \
+        ${CERTBASEPATH}/${NAME}/cert.pem    \
+        ${CERTBASEPATH}/${NAME}/chain.pem   \
+        > {{ haproxy_certificate_path }}/${NAME}.pem
+
+    # Reload HAProxy
+    systemctl reload haproxy
+  fi
+done

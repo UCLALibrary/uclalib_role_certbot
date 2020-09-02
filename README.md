@@ -43,20 +43,24 @@ Variables associated with initiating a certificate request and set-up of renewal
     ```
     certbot_certificates:
       certname1:
-        domains: []
+        domains:
           - example1.library.ucla.edu
           - example2.library.ucla.edu
       certname2:
-        domains: []
+        domains:
           - example3.library.ucla.edu
           - example4.library.ucla.edu
       certname3:
-        domains: []
+        domains:
           - example5.library.ucla.edu
           - example6.library.ucla.edu
     ```
 - `certbot_renewhook` - OPTIONAL - defines the command that should run after a successful certificate renewal
 - `certbot_make_cert_request` - defines whether a certificate request should be made (`true`/`false`)
+- `certbot_request_type` - defines the type of certificate request process to use (values are `standard` or `haproxy` - default is `standard`)
+    * `standard` - certificates will be requested/packaged using the standard (default) method
+    * `haproxy` - certificates will be requested/packaged for use by HAProxy
+- `certbot_http_challenge_port` - defines the certbot HTTP challenge port (applicable only when using `certbot_request_type: haproxy`)
 - `certbot_http_access_restricted` - defines whether the system running certbot will have restricted access to http (`true`/`false`)
 - `certbot_cron_renew_user` - defines the user the cron job should run as
 - `certbot_cron_renew_hour` - defines the hour parameter for when the cron job should run
@@ -76,6 +80,7 @@ acme_accnt_priv_key_json
 
 
 certbot_make_cert_request
+certbot_request_type
 certbot_domains
 cerbot_certname
 ```
