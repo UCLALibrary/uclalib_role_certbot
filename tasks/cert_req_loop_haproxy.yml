@@ -21,4 +21,11 @@
         {{ certbot_baseconfig_path }}/live/{{ item.key }}/chain.pem > {{ haproxy_certificate_path }}/{{ item.key }}.pem
       notify:
         - reload haproxy
+
+    - name: Set ownership and permissions of HAProxy pem file
+      file:
+        path: "{{ haproxy_certificate_path }}/{{ item.key }}.pem"
+        owner: "haproxy"
+        group: "haproxy"
+        mode: "0640"
   when: not cert_path_status.stat.exists | bool
