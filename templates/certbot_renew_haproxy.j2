@@ -16,16 +16,16 @@ CERTNAMES=$(find ${CERTBASEPATH} -mindepth 1 -maxdepth 1 -type d -printf '%f\n')
 CERT_EXP_LIMIT=30
 
 for NAME in ${CERTNAMES} ; do
-  VALID_DAYS=$((certbot certificates --cert-name ${NAME} | grep -o "VALID: [0-9]* days" | awk '{ print $2 }') 2> /dev/null)
+  VALID_DAYS=$( (certbot certificates --cert-name "${NAME}" | grep -o "VALID: [0-9]* days" | awk '{ print $2 }') 2> /dev/null )
 
   if [ "${VALID_DAYS}" -le "${CERT_EXP_LIMIT}" ] ; then
-    certbot renew --quiet --cert-name ${NAME} --http-01-port {{ certbot_http_challenge_port }}
+    certbot renew --quiet --cert-name "${NAME}" --http-01-port {{ certbot_http_challenge_port }}
 
     # Package certificate in haproxy pem file format
-    cat ${CERTBASEPATH}/${NAME}/privkey.pem \
-        ${CERTBASEPATH}/${NAME}/cert.pem    \
-        ${CERTBASEPATH}/${NAME}/chain.pem   \
-        > {{ haproxy_certificate_path }}/${NAME}.pem
+    cat ${CERTBASEPATH}/"${NAME}"/privkey.pem \
+        ${CERTBASEPATH}/"${NAME}"/cert.pem    \
+        ${CERTBASEPATH}/"${NAME}"/chain.pem   \
+        > {{ haproxy_certificate_path }}/"${NAME}".pem
 
     # Reload HAProxy
     systemctl reload haproxy
