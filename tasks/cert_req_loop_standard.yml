@@ -18,6 +18,7 @@
     lsof -i:80 | tail -1 | awk '{ print $1 }'
   register: http_port_binding
   changed_when: false
+  failed_when: http_port_binding.rc > 1
 
 - block:
     - name: Stop process bound to port 80
