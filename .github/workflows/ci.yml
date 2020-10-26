@@ -17,11 +17,11 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'
-      - name: Install test dependencies
+      - name: Install molecule test dependencies
         run: pip3 install molecule[docker] yamllint ansible-lint
-      - name: Run Molecule tests
+      - name: Run molecule tests
         run: molecule test
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
-        working-directory: molecule
+        working-directory: ./molecule
