@@ -22,5 +22,6 @@ jobs:
       - name: Run molecule tests
         run: molecule test
         env:
+          # Enables text coloring for molecule and ansible output
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
