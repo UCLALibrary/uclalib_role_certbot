@@ -3,6 +3,7 @@
 # Certbot installation packages:
 certbot_install_pkgs:
   - "certbot"
+  - "lsof"
 
 # Certbot can be registered with a supported ACME account service
 # This role supports Let's Encrypt or Sectigo
