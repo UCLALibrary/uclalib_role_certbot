@@ -1,0 +1,7 @@
+---
+
+acme_server_name: "acme-us.certinext.io"
+
+acme_accnt_url: "https://{{ acme_server_name }}/v1/directory"
+
+certbot_acme_accnt_path: "{{ certbot_baseconfig_path }}/accounts/{{ acme_server_name }}"

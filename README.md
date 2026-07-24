@@ -28,7 +28,7 @@ Reference `defaults/main.yml` to review default values.
 
 Variables associated with certbot installation and ACME account set-up:
 - `certbot_install_pkgs` - defines the set of certbot packages necessary to complete the installation.
-- `certbot_reg_type` - defines the registration type for the certbot client (acceptable value are: `sectigo` or `letsencrypt`).
+- `certbot_reg_type` - defines the registration type for the certbot client (acceptable value are: `incommon` or `letsencrypt`).
 - `certbot_baseconfig_path` - defines the path to certbot configuration and certificate files (default: `/etc/letsencrypt`).
 - `certbot_acme_accnt_path` - defines the path to ACME account registration data.
 - `acme_accnt_email` - defines the email address associated with the ACME account.
