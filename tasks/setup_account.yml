@@ -2,6 +2,6 @@
 
 - name: Register ACME client
   command:
-    command: certbot register
+    cmd: certbot register
     creates:  '{{ certbot_acme_accnt_path }}'
   changed_when: true
