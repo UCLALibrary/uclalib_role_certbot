@@ -4,4 +4,5 @@
   command:
     cmd: certbot register
     creates:  '{{ certbot_acme_accnt_path }}'
-  changed_when: true
+  register: acme_register
+  changed_when: acme_register.stdout is defined
