@@ -5,4 +5,6 @@
     cmd: certbot register
     creates:  '{{ certbot_acme_accnt_path }}'
   register: acme_register
-  changed_when: acme_register.stdout is defined
+  changed_when: 
+   - acme_register.stdout is defined
+   - "'Account registered.' in acme_register.stdout"
